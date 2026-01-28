@@ -1,0 +1,1410 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مميّز العمليات في المسائل اللفظية | تطبيق تفاعلي</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --radius: 18px;
+      --shadow: 0 18px 45px rgba(0,0,0,.22);
+      --shadow-light: 0 10px 25px rgba(15,23,42,.10);
+    }
+
+    /* ====== وضع داكن هادئ ====== */
+    html[data-theme="dark"]{
+      --bg1:#0b1020;
+      --bg2:#0e1324;
+
+      --text:#eef2ff;
+      --muted:#b8c4e8;
+
+      --stroke: rgba(255,255,255,.12);
+
+      --surface: rgba(255,255,255,.06);
+      --surface2: rgba(255,255,255,.10);
+
+      --soft: rgba(255,255,255,.05);
+      --soft2: rgba(255,255,255,.09);
+
+      --good:#22c55e;
+      --bad:#ef4444;
+      --warn:#f59e0b;
+
+      /* موف + وردي بارد */
+      --accent:#a78bfa;
+      --accent2:#f472b6;
+
+      /* توهج خفيف لتقليل الإجهاد */
+      --glow1: rgba(167,139,250,.10);
+      --glow2: rgba(244,114,182,.07);
+
+      --shadow: 0 18px 45px rgba(0,0,0,.22);
+      --focus: rgba(167,139,250,.35);
+    }
+
+    /* ====== وضع فاتح هادئ ====== */
+    html[data-theme="light"]{
+      --bg1:#f7f4ff;
+      --bg2:#fdf2f8;
+
+      --text:#0f172a;
+      --muted:#475569;
+
+      --stroke: rgba(15,23,42,.10);
+
+      --surface: rgba(255,255,255,.70);
+      --surface2: rgba(255,255,255,.92);
+
+      --soft: rgba(255,255,255,.84);
+      --soft2: rgba(255,255,255,.92);
+
+      --good:#16a34a;
+      --bad:#dc2626;
+      --warn:#d97706;
+
+      --accent:#8b5cf6;
+      --accent2:#f472b6;
+
+      --glow1: rgba(139,92,246,.12);
+      --glow2: rgba(244,114,182,.09);
+
+      --shadow: 0 10px 25px rgba(15,23,42,.10);
+      --focus: rgba(139,92,246,.28);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: "Tajawal", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 15% 0%, var(--glow1), transparent 62%),
+        radial-gradient(900px 600px at 85% 10%, var(--glow2), transparent 62%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    a{ color:inherit; }
+    :focus-visible{
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 12px;
+    }
+
+    .wrap{
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px 16px 28px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 14px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--surface2), var(--surface));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 260px;
+    }
+    .logo{
+      width:44px; height:44px;
+      border-radius: 14px;
+      border:1px solid var(--stroke);
+      background:
+        radial-gradient(16px 16px at 30% 25%, rgba(255,255,255,.45), transparent 55%),
+        linear-gradient(135deg, var(--accent), var(--accent2));
+      display:grid; place-items:center;
+      box-shadow: 0 10px 25px rgba(0,0,0,.16);
+      flex:0 0 auto;
+    }
+    .logo svg{ opacity:.95 }
+    .brand h1{
+      font-size: clamp(16px, 2.3vw, 22px);
+      margin:0;
+      line-height:1.2;
+      letter-spacing:.2px;
+    }
+    .brand p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-start;
+    }
+
+    .btn{
+      border:1px solid var(--stroke);
+      background: var(--soft);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, filter .15s ease;
+      font-weight:800;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+      backdrop-filter: blur(8px);
+    }
+    .btn:hover{ transform: translateY(-1px); background: var(--soft2); }
+    .btn:active{ transform: translateY(0); }
+    .btn.primary{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-color: rgba(255,255,255,.22);
+      color: rgba(255,255,255,.98);
+    }
+    html[data-theme="light"] .btn.primary{ border-color: rgba(15,23,42,.10); }
+    .btn.primary:hover{ filter: brightness(1.03); }
+    .btn.ghost{ background: transparent; }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none !important; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 920px){
+      .grid{ grid-template-columns:1fr; }
+      .brand{ min-width:auto; }
+    }
+
+    .card{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--surface2), var(--surface));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+    .card .hd{
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    html[data-theme="light"] .card .hd{ border-bottom: 1px solid rgba(15,23,42,.08); }
+    .card .hd h2{ margin:0; font-size: 18px; letter-spacing:.2px; }
+    .badge{
+      font-size: 12px;
+      background: var(--soft);
+      border:1px solid var(--stroke);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space:nowrap;
+      color: var(--text);
+    }
+    .card .bd{ padding: 14px; }
+
+    .tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom: 12px;
+    }
+    .tab{
+      border:1px solid var(--stroke);
+      background: var(--soft);
+      border-radius: 999px;
+      padding: 8px 10px;
+      cursor:pointer;
+      font-weight:900;
+      color: var(--text);
+    }
+    .tab[aria-selected="true"]{
+      background: var(--soft2);
+      border-color: rgba(255,255,255,.24);
+    }
+    html[data-theme="light"] .tab[aria-selected="true"]{ border-color: rgba(15,23,42,.12); }
+
+    .note{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .rules{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 720px){ .rules{ grid-template-columns:1fr; } }
+
+    .rule{
+      border:1px solid rgba(255,255,255,.12);
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    html[data-theme="light"] .rule{ border-color: rgba(15,23,42,.10); }
+    .rule h3{
+      margin:0 0 6px 0;
+      font-size: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .rule p{ margin: 6px 0; color: var(--muted); line-height:1.7; font-size: 14px; }
+    .rule ul{
+      margin: 8px 0 0 0;
+      padding: 0 18px 0 0;
+      color: var(--text);
+      line-height:1.8;
+      font-size: 14px;
+    }
+
+    .chip{
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: var(--soft);
+      color: var(--text);
+      white-space:nowrap;
+      opacity:.95;
+    }
+
+    .panel{
+      border: 1px solid rgba(255,255,255,.12);
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    html[data-theme="light"] .panel{ border-color: rgba(15,23,42,.10); }
+
+    .densePhrases{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width: 720px){ .densePhrases{ grid-template-columns:1fr; } }
+
+    .phraseBox{
+      border: 1px solid rgba(255,255,255,.12);
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    html[data-theme="light"] .phraseBox{ border-color: rgba(15,23,42,.10); }
+    .phraseBox h4{
+      margin:0 0 8px 0;
+      font-size: 15px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .phraseList{
+      margin:0;
+      padding: 0 18px 0 0;
+      line-height: 1.9;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .phraseList li{ margin-bottom: 4px; }
+    .subnote{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.7;
+    }
+
+    .selectRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    select{
+      font-family: inherit;
+      border-radius: 12px;
+      padding: 10px 12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.14);
+      color: var(--text);
+      outline:none;
+      font-weight: 800;
+    }
+    html[data-theme="light"] select{ background: rgba(255,255,255,.90); }
+
+    input{
+      font-family: inherit;
+      border-radius: 12px;
+      padding: 10px 12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.14);
+      color: var(--text);
+      outline:none;
+      font-weight: 800;
+      min-width: 220px;
+    }
+    html[data-theme="light"] input{ background: rgba(255,255,255,.90); }
+
+    .quizTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .progressWrap{ width: 100%; max-width: 360px; }
+    .progress{
+      height: 10px;
+      background: var(--soft);
+      border:1px solid var(--stroke);
+      border-radius: 999px;
+      overflow:hidden;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+    .small{
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .question{
+      border:1px solid rgba(255,255,255,.12);
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    html[data-theme="light"] .question{ border-color: rgba(15,23,42,.10); }
+    .question h3{ margin:0 0 8px 0; font-size: 16px; }
+    .qText{
+      margin:0;
+      line-height:1.9;
+      font-size: 15px;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    .hint{
+      margin-top: 10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: var(--soft2);
+      padding: 10px;
+      color: var(--text);
+      line-height:1.85;
+      font-size: 14px;
+      display:none;
+      opacity:.98;
+    }
+    html[data-theme="light"] .hint{ border-color: rgba(15,23,42,.10); }
+
+    .choices{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 12px;
+    }
+    @media (max-width:520px){ .choices{ grid-template-columns:1fr; } }
+
+    .choice{
+      border:1px solid rgba(255,255,255,.14);
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 12px;
+      cursor:pointer;
+      font-weight:900;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease, filter .12s ease;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color: var(--text);
+    }
+    html[data-theme="light"] .choice{ border-color: rgba(15,23,42,.12); }
+    .choice:hover{
+      transform: translateY(-1px);
+      background: var(--soft2);
+      border-color: rgba(255,255,255,.22);
+      filter: brightness(1.01);
+    }
+    html[data-theme="light"] .choice:hover{ border-color: rgba(15,23,42,.14); }
+    .choice[disabled]{ opacity:.6; cursor:not-allowed; transform:none !important; }
+
+    .resultBox{
+      margin-top: 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: var(--soft);
+      padding: 12px;
+      display:none;
+    }
+    html[data-theme="light"] .resultBox{ border-color: rgba(15,23,42,.12); }
+    .resultTitle{
+      margin:0 0 6px 0;
+      font-weight: 1000;
+      letter-spacing:.2px;
+    }
+    .ok{ color: var(--good); }
+    .no{ color: var(--bad); }
+    .explain{
+      margin: 0;
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 14px;
+      opacity:.95;
+    }
+    .eq{
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 14px;
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(0,0,0,.08);
+      color: var(--text);
+      font-weight: 800;
+      display:none;
+    }
+    html[data-theme="light"] .eq{
+      border-color: rgba(15,23,42,.14);
+      background: rgba(15,23,42,.04);
+    }
+    .split{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+
+    .sideStats{ display:grid; gap:12px; }
+    .stat{
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, var(--surface2), var(--surface));
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    html[data-theme="light"] .stat{ border-color: rgba(15,23,42,.10); }
+    .stat h3{ margin:0 0 6px 0; font-size:16px; }
+    .stat p{ margin:0; color: var(--muted); line-height:1.8; font-size: 14px; }
+    .kpi{ margin-top: 10px; display:flex; gap:10px; flex-wrap:wrap; }
+    .kpi .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background: var(--soft);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 900;
+      font-size: 13px;
+      color: var(--text);
+    }
+    html[data-theme="light"] .kpi .pill{ border-color: rgba(15,23,42,.12); }
+
+    footer{
+      margin-top: 14px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.9;
+      padding: 10px 6px;
+      opacity:.95;
+    }
+
+    .hidden{ display:none !important; }
+
+    @media print{
+      html, body{ background:#fff !important; color:#111 !important; }
+      header, .top-actions, .tabs, .btn{ display:none !important; }
+      .card, .rule, .panel, .question, .stat, .phraseBox{
+        box-shadow:none !important;
+        background:#fff !important;
+        border:1px solid #ddd !important;
+      }
+      .note, .rule p, .stat p, footer{ color:#222 !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand" aria-label="عنوان التطبيق">
+        <div class="logo" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l2.3 6.2L21 10.3l-6.2 2.3L12 19l-2.3-6.4L3 10.3l6.7-2.1L12 2z" fill="rgba(255,255,255,.95)"/>
+          </svg>
+        </div>
+        <div>
+          <h1>مميّز العمليات في المسائل اللفظية</h1>
+          <p>قواعد ذهبية + تعابير الكتب + تدريب مكثّف</p>
+        </div>
+      </div>
+
+      <div class="top-actions" aria-label="أزرار التنقل">
+        <button class="btn ghost" id="btnHome" type="button">الواجهة</button>
+        <button class="btn ghost" id="btnLearn" type="button">القواعد والأمثلة</button>
+        <button class="btn primary" id="btnQuiz" type="button">ابدأ التدريب</button>
+        <button class="btn" id="btnTheme" type="button" title="تبديل الوضع">الوضع: داكن</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <main class="card" aria-live="polite">
+        <div class="hd">
+          <h2 id="viewTitle">الواجهة</h2>
+          <span class="badge" id="badgeState">جاهز</span>
+        </div>
+
+        <div class="bd">
+          <div class="tabs" role="tablist" aria-label="تبويبات المحتوى">
+            <button class="tab" id="tabHome" role="tab" aria-selected="true" type="button">الواجهة</button>
+            <button class="tab" id="tabLearn" role="tab" aria-selected="false" type="button">القواعد والأمثلة</button>
+            <button class="tab" id="tabQuiz" role="tab" aria-selected="false" type="button">التدريب</button>
+          </div>
+
+          <!-- الواجهة -->
+          <section id="viewHome">
+            <p class="note">
+              يهدف هذا التطبيق إلى تدريب الطالب على اختيار <strong>العملية المناسبة</strong> في المسائل اللفظية
+              بناءً على معنى الموقف (زيادة/نقص/مجموعات متساوية/توزيع بالتساوي) مع دعم تعابير الكتب (الضعف/الأمثال/النصف…).
+            </p>
+
+            <div class="panel" style="margin-top:12px;">
+              <strong>خطوات الاستخدام:</strong>
+              <ol style="margin:10px 0 0; padding:0 18px 0 0; line-height:1.9;">
+                <li>اطّلع على القواعد والتعابير الدالّة في صفحة (القواعد والأمثلة).</li>
+                <li>حدّد نمط التدريب ثم ابدأ التدريب.</li>
+                <li>بعد كل إجابة، اقرأ التفسير لتثبيت الفهم.</li>
+              </ol>
+
+              <div class="selectRow">
+                <label for="quizCount" style="font-weight:900;">عدد أسئلة التدريب:</label>
+                <select id="quizCount" aria-label="اختيار عدد الأسئلة">
+                  <option value="10" selected>10 أسئلة</option>
+                  <option value="15">15 سؤالًا</option>
+                  <option value="20">20 سؤالًا</option>
+                  <option value="30">30 سؤالًا</option>
+                  <option value="999">جميع الأسئلة</option>
+                </select>
+
+                <label for="scopeSel" style="font-weight:900;">نمط التدريب:</label>
+                <select id="scopeSel" aria-label="اختيار نمط التدريب">
+                  <option value="mix" selected>مختلط (جميع العمليات)</option>
+                  <option value="add">الجمع فقط</option>
+                  <option value="sub">الطرح فقط</option>
+                  <option value="mul">الضرب فقط</option>
+                  <option value="div">القسمة فقط</option>
+                  <option value="special">تعابير خاصة (ضعف/أمثال/نصف…)</option>
+                </select>
+
+                <label for="levelSel" style="font-weight:900;">المستوى:</label>
+                <select id="levelSel" aria-label="اختيار المستوى">
+                  <option value="all" selected>جميع المستويات</option>
+                  <option value="1">المستوى (1): مباشر</option>
+                  <option value="2">المستوى (2): مجموعات/توزيع</option>
+                  <option value="3">المستوى (3): تعابير خاصة/قد تُربك</option>
+                </select>
+
+                <button class="btn primary" id="startQuizFromHome" type="button">ابدأ التدريب الآن</button>
+                <button class="btn" id="printRules" type="button">طباعة القواعد</button>
+              </div>
+
+              <div class="selectRow" style="margin-top:10px;">
+                <label for="teacherName" style="font-weight:900;">اسم المعلّم:</label>
+                <input id="teacherName" type="text" placeholder="اكتب الاسم هنا" />
+                <button class="btn" id="saveName" type="button">حفظ الاسم</button>
+              </div>
+
+              <p class="note" style="margin-top:10px;">
+                توجيه تربوي: اطلب من الطالب بعد كل اختيار أن يبرّر بجملة واحدة:
+                <strong>“اخترتُ … لأن المسألة تتحدث عن …”</strong>.
+              </p>
+            </div>
+          </section>
+
+          <!-- القواعد والأمثلة -->
+          <section id="viewLearn" class="hidden">
+            <p class="note">
+              <strong>القاعدة الذهبية الكبرى:</strong> اختر العملية وفق معنى المسألة، ثم استخدم التعابير الدالّة كمؤشرات مساعدة.
+            </p>
+
+            <div class="rules" style="margin-top:12px;">
+              <div class="rule" aria-label="قاعدة الجمع">
+                <h3>الجمع <span class="chip">ضمّ أجزاء للحصول على الكل</span></h3>
+                <p><strong>سؤال القرار:</strong> هل أضم كميتين أو أكثر للحصول على المجموع/الإجمالي؟</p>
+                <ul>
+                  <li><strong>نوع القصة:</strong> زيادة/ضمّ/اجتماع.</li>
+                  <li><strong>تنبيه:</strong> إذا كان المطلوب “الإجمالي/المجموع/كم أصبح لديه” فالغالب جمع.</li>
+                </ul>
+              </div>
+
+              <div class="rule" aria-label="قاعدة الطرح">
+                <h3>الطرح <span class="chip">نقص/متبقّي/فرق</span></h3>
+                <p><strong>سؤال القرار:</strong> هل الكمية تنقص؟ أو هل أبحث عن الفرق بين كميتين؟</p>
+                <ul>
+                  <li><strong>نوع القصة:</strong> إزالة/فقد/صرف/متبقّي/مقارنة.</li>
+                  <li><strong>تنبيه:</strong> “كم بقي؟ كم الفرق؟ كم ينقص؟” غالبًا طرح.</li>
+                </ul>
+              </div>
+
+              <div class="rule" aria-label="قاعدة الضرب">
+                <h3>الضرب <span class="chip">مجموعات متساوية ونريد الكل</span></h3>
+                <p><strong>سؤال القرار:</strong> هل لدي مجموعات متساوية وأريد العدد الكلي؟</p>
+                <ul>
+                  <li><strong>نوع القصة:</strong> تكرار/صفوف وأعمدة/لكل…</li>
+                  <li><strong>مهم:</strong> تعابير <strong>الضعف/المِثل/الأمثال/الأضعاف</strong> تُشير غالبًا إلى الضرب.</li>
+                </ul>
+              </div>
+
+              <div class="rule" aria-label="قاعدة القسمة">
+                <h3>القسمة <span class="chip">توزيع/تجميع بالتساوي</span></h3>
+                <p><strong>سؤال القرار:</strong> هل أوزّع بالتساوي (نصيب)؟ أو أبحث عن عدد المجموعات؟</p>
+                <ul>
+                  <li><strong>نوع القصة:</strong> توزيع بالتساوي/كم لكل واحد/كم مجموعة.</li>
+                  <li><strong>مهم:</strong> “نِصف/ثُلث/رُبع” تقود غالبًا إلى القسمة.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel" style="margin-top:12px;">
+              <strong>شجرة قرار مختصرة (كما في التدريب):</strong>
+              <ol style="margin:10px 0 0; padding:0 18px 0 0; line-height:1.9;">
+                <li>هل توجد <strong>مجموعات متساوية</strong> أو (لكل/في كل/صفوف/أعمدة)؟ إذا نعم → (ضرب أو قسمة).</li>
+                <li>إذا كان المطلوب <strong>الكل</strong> من مجموعات متساوية → <strong>ضرب</strong>.</li>
+                <li>إذا كان لديك <strong>كل</strong> وتريد <strong>نصيبًا بالتساوي</strong> أو <strong>عدد مجموعات</strong> → <strong>قسمة</strong>.</li>
+                <li>إذا لا توجد مجموعات متساوية: هل هناك <strong>زيادة</strong>؟ → جمع، أم <strong>نقص/فرق</strong>؟ → طرح.</li>
+              </ol>
+            </div>
+
+            <!-- تعابير مكثفة كما في كتب الرياضيات -->
+            <div class="panel" style="margin-top:12px;">
+              <strong>تعابير دالّة مكثفة (كما ترد في الكتب):</strong>
+              <p class="subnote" style="margin:8px 0 0;">
+                ملاحظة: التعابير تُستخدم كمؤشرات، والحكم النهائي يكون للمطلوب ومعنى الموقف.
+              </p>
+
+              <div class="densePhrases">
+                <div class="phraseBox">
+                  <h4>تعابير الجمع <span class="chip">زيادة/ضمّ</span></h4>
+                  <ul class="phraseList" id="phrAdd"></ul>
+                </div>
+                <div class="phraseBox">
+                  <h4>تعابير الطرح <span class="chip">متبقّي/فرق</span></h4>
+                  <ul class="phraseList" id="phrSub"></ul>
+                </div>
+                <div class="phraseBox">
+                  <h4>تعابير الضرب <span class="chip">مجموعات/تكرار/أضعاف</span></h4>
+                  <ul class="phraseList" id="phrMul"></ul>
+                  <p class="subnote">
+                    أمثلة التعابير الخاصة: <strong>ضعف</strong> = ضرب في 2، <strong>مثلي/مثل</strong> = ضرب في 2، <strong>ثلاثة أمثال</strong> = ضرب في 3، <strong>أربعة أضعاف</strong> = ضرب في 4.
+                  </p>
+                </div>
+                <div class="phraseBox">
+                  <h4>تعابير القسمة <span class="chip">توزيع/تجميع/كسور</span></h4>
+                  <ul class="phraseList" id="phrDiv"></ul>
+                  <p class="subnote">
+                    تعابير الكسور الشائعة: <strong>نصف</strong> = قسمة على 2، <strong>ثلث</strong> = قسمة على 3، <strong>ربع</strong> = قسمة على 4.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- التدريب -->
+          <section id="viewQuiz" class="hidden">
+            <div class="quizTop">
+              <div class="progressWrap" aria-label="شريط التقدم">
+                <div class="progress"><div class="bar" id="bar"></div></div>
+                <div class="small" id="progressText">السؤال 0 من 0</div>
+              </div>
+
+              <div class="split">
+                <button class="btn" id="btnHint" type="button">إظهار تلميح</button>
+                <button class="btn" id="btnRestart" type="button">إعادة التدريب</button>
+              </div>
+            </div>
+
+            <div class="question" aria-label="مربع السؤال">
+              <h3 id="qTitle">السؤال</h3>
+              <p class="qText" id="qText"></p>
+
+              <div class="hint" id="hintBox" aria-label="تلميح السؤال"></div>
+
+              <div class="choices" id="choices" aria-label="خيارات العمليات"></div>
+
+              <div class="resultBox" id="resultBox" aria-label="نتيجة الإجابة">
+                <p class="resultTitle" id="resultTitle"></p>
+                <p class="explain" id="explain"></p>
+
+                <div class="split">
+                  <button class="btn" id="toggleSolution" type="button">إظهار الحل الحسابي</button>
+                  <button class="btn primary" id="btnNext" type="button">السؤال التالي</button>
+                </div>
+
+                <div class="eq" id="eqBox"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- العمود الجانبي -->
+      <aside class="sideStats">
+        <div class="stat">
+          <h3>لوحة المتابعة</h3>
+          <p>يعرض هذا القسم تقدّم الطالب، ويحتفظ بأفضل نتيجة على هذا الجهاز.</p>
+
+          <div class="kpi" aria-label="مؤشرات">
+            <div class="pill" id="kpiScore">النتيجة: 0</div>
+            <div class="pill" id="kpiCorrect">إجابات صحيحة: 0</div>
+            <div class="pill" id="kpiWrong">إجابات غير صحيحة: 0</div>
+            <div class="pill" id="kpiBest">أفضل نتيجة: 0</div>
+          </div>
+        </div>
+
+        <div class="stat">
+          <h3>مفاتيح تمييز سريعة</h3>
+          <p><strong>جمع:</strong> ضمّ/زيادة → الإجمالي.</p>
+          <p><strong>طرح:</strong> متبقّي/فرق → نقص/مقارنة.</p>
+          <p><strong>ضرب:</strong> مجموعات متساوية/أضعاف → الكل.</p>
+          <p><strong>قسمة:</strong> توزيع/تجميع/نصف… → نصيب أو عدد مجموعات.</p>
+        </div>
+
+        <div class="stat">
+          <h3>تنبيه مهم (كما في الكتب)</h3>
+          <p>
+            عبارة <strong>“في كل”</strong> قد تدل على الضرب أو القسمة. احسم الاختيار عبر المطلوب:
+            إذا كان المطلوب <strong>الكل</strong> → ضرب، وإذا كان المطلوب <strong>عدد المجموعات/النصيب</strong> → قسمة.
+          </p>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      ملتقى معلمي ومعلمات الرياضيات — الملتقى التفاعلي<br/>
+      إعداد: <span id="teacherNameOut">—</span><br/>
+      نسخة تدريبية: تمييز العمليات في المسائل اللفظية
+    </footer>
+  </div>
+
+  <script>
+    // =============================
+    // ثابتات لغوية (تعابير دالّة مكثفة)
+    // =============================
+    const PHRASES = {
+      add: [
+        "المجموع", "الإجمالي", "المجموع الكلي", "معًا", "بالإضافة إلى", "انضمّ", "أضيف", "زادت", "أصبح لديه",
+        "جمع ما لدى", "ارتفع العدد", "ازداد", "مجموع ما في …", "كم في المجموع؟", "كم صار لديه؟"
+      ],
+      sub: [
+        "بقي", "تبقّى", "المتبقّي", "نقص", "أقل", "الفرق", "كم يزيد عن؟", "كم ينقص عن؟", "طرح", "أزال",
+        "أعطى", "أنفق", "دفع", "فقد", "استهلك", "انخفض", "كم بقي؟", "كم الفرق؟"
+      ],
+      mul: [
+        "في كل", "لكل", "مجموعات متساوية", "مرات", "تكرار", "صفوف وأعمدة", "عدد الصفوف × عدد الأعمدة",
+        "أضعاف", "ضعف", "مثلي/مثل", "ثلاثة أمثال", "أربعة أضعاف", "كل علبة فيها", "كل صندوق يحتوي",
+        "ثمن الواحد × العدد", "عدد الأيام × عدد … يوميًا"
+      ],
+      div: [
+        "بالتساوي", "قسّم", "توزيع", "نصيب", "لكل واحد", "كم لكل", "كم مجموعة", "كم صندوق", "كم كيس",
+        "يقسم إلى", "مقسومة على", "نصف", "ثلث", "ربع", "معدل لكل", "بالتساوي بين"
+      ]
+    };
+
+    const OP_DECISION = {
+      add: "هل توجد كميتان أو أكثر تريد جمعهما للحصول على الإجمالي؟",
+      sub: "هل يوجد نقص/إزالة أو تريد معرفة الفرق أو المتبقي؟",
+      mul: "هل توجد مجموعات متساوية أو تكرار (في كل/لكل/صفوف وأعمدة) وتريد الكل؟",
+      div: "هل يوجد توزيع/تجميع بالتساوي (نصيب/كم مجموعة/نصف…)؟"
+    };
+
+    const OP_TYPE = {
+      add: "نوع القصة: زيادة/ضمّ",
+      sub: "نوع القصة: نقص/متبقّي/فرق",
+      mul: "نوع القصة: مجموعات متساوية/تكرار/أضعاف",
+      div: "نوع القصة: توزيع/تجميع بالتساوي"
+    };
+
+    const SPECIAL_TAGS = ["ضعف","مثل","مثلي","أمثال","أضعاف","نصف","ثلث","ربع"];
+
+    // =============================
+    // بيانات العمليات
+    // =============================
+    const OPS = [
+      { id: "add", label: "الجمع (+)" },
+      { id: "sub", label: "الطرح (−)" },
+      { id: "mul", label: "الضرب (×)" },
+      { id: "div", label: "القسمة (÷)" },
+    ];
+
+    // =============================
+    // بنك أسئلة موسّع (مستويات + تعابير خاصة)
+    // level: 1 مباشر، 2 مجموعات/توزيع، 3 تعابير خاصة/قد تُربك
+    // tags: تعابير/مفاهيم قد تساعد في التلميح
+    // =============================
+    const QUESTIONS = [
+      // ===== جمع (مباشر) =====
+      { op:"add", level:1, tags:["إجمالي","أضيف"], text:"كان لدى سامي 14 كرة، ثم اشترى 6 كرات.\nكم كرة أصبح لديه؟",
+        explain:"المسألة تصف إضافة كمية إلى كمية موجودة للحصول على الإجمالي؛ لذلك العملية المناسبة هي الجمع.", solution:"14 + 6 = 20" },
+      { op:"add", level:1, tags:["المجموع","معًا"], text:"في السلة 7 تفاحات و6 برتقالات.\nكم ثمرة في السلة؟",
+        explain:"ضمّ كميتين للحصول على المجموع؛ لذلك الجمع.", solution:"7 + 6 = 13" },
+      { op:"add", level:1, tags:["الإجمالي"], text:"في المكتبة 12 كتابًا للقصص و9 كتب للعلوم.\nكم عدد الكتب في المكتبة؟",
+        explain:"المطلوب إجمالي عدد الكتب؛ لذلك الجمع.", solution:"12 + 9 = 21" },
+      { op:"add", level:1, tags:["ازداد"], text:"كان عدد الطلاب 18 طالبًا، ثم انضمّ 5 طلاب.\nكم أصبح عدد الطلاب؟",
+        explain:"هناك زيادة بانضمام طلاب؛ لذلك الجمع.", solution:"18 + 5 = 23" },
+      { op:"add", level:1, tags:["المجموع الكلي"], text:"جمع خالد 9 نقاط في الجولة الأولى و8 نقاط في الجولة الثانية.\nكم نقطة في المجموع؟",
+        explain:"جمع نتيجتين للحصول على المجموع الكلي؛ لذلك الجمع.", solution:"9 + 8 = 17" },
+      { op:"add", level:2, tags:["جزء-جزء-كل"], text:"لدى مريم 10 أقلام زرقاء و6 أقلام حمراء.\nكم قلمًا لديها؟",
+        explain:"ضمّ جزأين للحصول على الكل؛ لذلك الجمع.", solution:"10 + 6 = 16" },
+
+      // ===== طرح (مباشر) =====
+      { op:"sub", level:1, tags:["بقي","دفع"], text:"كان لدى سامي 20 ريالًا، ثم دفع 7 ريالات.\nكم ريالًا بقي معه؟",
+        explain:"نقصت الكمية بسبب الدفع والمطلوب المتبقي؛ لذلك الطرح.", solution:"20 − 7 = 13" },
+      { op:"sub", level:1, tags:["نقص","أعطى"], text:"لدى أحمد 17 كرة، أعطى صديقه 6 كرات.\nكم كرة تبقّى معه؟",
+        explain:"أزال/أعطى جزءًا من الكل والمطلوب المتبقي؛ لذلك الطرح.", solution:"17 − 6 = 11" },
+      { op:"sub", level:1, tags:["الفرق","كم يزيد"], text:"مع أحمد 18 كرة، ومع سالم 11 كرة.\nكم كرة تزيد كرات أحمد عن سالم؟",
+        explain:"المطلوب هو الفرق بين كميتين؛ لذلك الطرح (الأكبر − الأصغر).", solution:"18 − 11 = 7" },
+      { op:"sub", level:1, tags:["بقي"], text:"كان في الحافلة 12 راكبًا، نزل 5 ركاب.\nكم راكبًا بقي؟",
+        explain:"نقص عدد الركاب بسبب النزول؛ لذلك الطرح.", solution:"12 − 5 = 7" },
+      { op:"sub", level:2, tags:["كم ينقص"], text:"لدى متجر 30 قلمًا، يحتاج إلى 45 قلمًا.\nكم قلمًا ينقصه؟",
+        explain:"المطلوب مقدار النقص (الفرق بين المطلوب والمتوفر)؛ لذلك الطرح.", solution:"45 − 30 = 15" },
+      { op:"sub", level:2, tags:["الفرق"], text:"طول حبل 25 مترًا، قُطع منه 9 أمتار.\nكم مترًا بقي؟",
+        explain:"إزالة جزء من الكل والمطلوب المتبقي؛ لذلك الطرح.", solution:"25 − 9 = 16" },
+
+      // ===== ضرب (مجموعات متساوية) =====
+      { op:"mul", level:2, tags:["في كل","مجموعات متساوية"], text:"في كل صندوق 5 أقلام، وعدد الصناديق 4.\nكم قلمًا في الصناديق جميعًا؟",
+        explain:"مجموعات متساوية ونريد الكل؛ لذلك الضرب.", solution:"4 × 5 = 20" },
+      { op:"mul", level:2, tags:["صفوف","أعمدة"], text:"في لوحة زراعة 3 صفوف من الشتلات، في كل صف 6 شتلات.\nكم شتلة في اللوحة؟",
+        explain:"صفوف متساوية ونريد العدد الكلي؛ لذلك الضرب.", solution:"3 × 6 = 18" },
+      { op:"mul", level:2, tags:["لكل","تكرار"], text:"اشترى وليد 3 علب، في كل علبة 10 حبات.\nكم حبة اشترى؟",
+        explain:"مجموعات متساوية (علب) ونريد الكل؛ لذلك الضرب.", solution:"3 × 10 = 30" },
+      { op:"mul", level:2, tags:["ثمن الواحد × العدد"], text:"ثمن التذكرة 7 ريالات، اشترى يوسف 4 تذاكر.\nكم دفع؟",
+        explain:"تكرار نفس الثمن بعدد التذاكر؛ لذلك الضرب.", solution:"7 × 4 = 28" },
+      { op:"mul", level:2, tags:["كل يوم"], text:"يحفظ الطالب 3 كلمات يوميًا لمدة 6 أيام.\nكم كلمة يحفظ؟",
+        explain:"تكرار يومي ثابت؛ لذلك الضرب.", solution:"3 × 6 = 18" },
+      { op:"mul", level:2, tags:["في كل"], text:"في كل طاولة 4 كراسٍ، وعدد الطاولات 5.\nكم كرسيًا في المجموع؟",
+        explain:"مجموعات متساوية ونريد الكل؛ لذلك الضرب.", solution:"5 × 4 = 20" },
+
+      // ===== قسمة (توزيع/تجميع) =====
+      { op:"div", level:2, tags:["بالتساوي","نصيب"], text:"لدى المعلم 24 بطاقة، وزّعها بالتساوي على 6 طلاب.\nكم بطاقة لكل طالب؟",
+        explain:"توزيع بالتساوي والمطلوب نصيب الواحد؛ لذلك القسمة.", solution:"24 ÷ 6 = 4" },
+      { op:"div", level:2, tags:["كم صندوق","تجميع"], text:"لدى متجر 24 علبة، يضع في كل صندوق 4 علب.\nكم صندوقًا يحتاج؟",
+        explain:"تجميع: نعرف الكل ومقدار كل مجموعة ونريد عدد المجموعات؛ لذلك القسمة.", solution:"24 ÷ 4 = 6" },
+      { op:"div", level:2, tags:["في كل صف؟","صفوف"], text:"يوجد 32 شجرة مرتبة في 4 صفوف متساوية.\nكم شجرة في كل صف؟",
+        explain:"نعرف الكل وعدد الصفوف ونريد مقدار كل صف؛ لذلك القسمة.", solution:"32 ÷ 4 = 8" },
+      { op:"div", level:2, tags:["بالتساوي"], text:"لدى وليد 18 قطعة حلوى، يريد تقسيمها بالتساوي بينه وبين أخويه (3 أشخاص).\nكم قطعة لكل واحد؟",
+        explain:"توزيع بالتساوي؛ لذلك القسمة.", solution:"18 ÷ 3 = 6" },
+      { op:"div", level:2, tags:["كم كيس"], text:"يريد متجر وضع 30 قلمًا في أكياس، في كل كيس 6 أقلام.\nكم كيسًا يحتاج؟",
+        explain:"تجميع: الكل معلوم ومقدار الكيس معلوم؛ نريد عدد الأكياس؛ لذلك القسمة.", solution:"30 ÷ 6 = 5" },
+      { op:"div", level:2, tags:["نصيب"], text:"قسّم 20 قلمًا بالتساوي على 5 طلاب.\nكم قلمًا لكل طالب؟",
+        explain:"توزيع بالتساوي؛ لذلك القسمة.", solution:"20 ÷ 5 = 4" },
+
+      // ===== أسئلة قد تُربك (في كل) ضرب/قسمة =====
+      { op:"mul", level:3, tags:["في كل","الكل"], text:"لدى فهد 6 صناديق، في كل صندوق 4 كرات.\nكم كرة لديه؟",
+        explain:"المطلوب العدد الكلي من مجموعات متساوية؛ لذلك الضرب.", solution:"6 × 4 = 24" },
+      { op:"div", level:3, tags:["في كل","كم صندوق"], text:"لدى فهد 24 كرة، يريد وضعها في صناديق، في كل صندوق 4 كرات.\nكم صندوقًا يحتاج؟",
+        explain:"المطلوب عدد المجموعات (الصناديق)؛ لذلك القسمة.", solution:"24 ÷ 4 = 6" },
+
+      // ===== تعابير الضِّعف/المِثل/الأضعاف (ضرب) =====
+      { op:"mul", level:3, tags:["ضعف"], text:"عدد طلاب الصف (ب) ضعف عدد طلاب الصف (أ).\nإذا كان في الصف (أ) 12 طالبًا، كم طالبًا في الصف (ب)؟",
+        explain:"“ضعف” تعني ضربًا في 2؛ لذلك العملية المناسبة هي الضرب.", solution:"12 × 2 = 24" },
+      { op:"mul", level:3, tags:["مثلي"], text:"اشترى خالد 9 أقلام، ثم اشترى لاحقًا عددًا يساوي مثلي ما اشتراه.\nما العملية المناسبة لإيجاد العدد الجديد؟",
+        explain:"“مثلي/مثل” تعني ضربًا في 2؛ لذلك العملية المناسبة هي الضرب.", solution:"9 × 2 = 18" },
+      { op:"mul", level:3, tags:["ثلاثة أمثال"], text:"عدد صفحات كتابٍ ما ثلاثة أمثال عدد صفحات كتيّبٍ فيه 10 صفحات.\nما العملية المناسبة لإيجاد عدد صفحات الكتاب؟",
+        explain:"“ثلاثة أمثال” تعني ضربًا في 3؛ لذلك الضرب.", solution:"10 × 3 = 30" },
+      { op:"mul", level:3, tags:["أربعة أضعاف"], text:"عدد الكرات في الصندوق الثاني أربعة أضعاف الصندوق الأول الذي فيه 6 كرات.\nما العملية المناسبة لإيجاد عدد كرات الصندوق الثاني؟",
+        explain:"“أربعة أضعاف” تعني ضربًا في 4؛ لذلك الضرب.", solution:"6 × 4 = 24" },
+
+      // ===== تعابير النصف/الثلث/الربع (قسمة) =====
+      { op:"div", level:3, tags:["نصف"], text:"أخذ الطالب نصف 18 قطعة.\nما العملية المناسبة لإيجاد عدد القطع التي أخذها؟",
+        explain:"“نصف” يعني قسمة على 2؛ لذلك القسمة.", solution:"18 ÷ 2 = 9" },
+      { op:"div", level:3, tags:["ثلث"], text:"تم توزيع ثلث 21 كرة على فريق.\nما العملية المناسبة لإيجاد عدد الكرات الموزعة؟",
+        explain:"“ثلث” يعني قسمة على 3؛ لذلك القسمة.", solution:"21 ÷ 3 = 7" },
+      { op:"div", level:3, tags:["ربع"], text:"استخدمت مريم ربع 20 ملصقًا.\nما العملية المناسبة لإيجاد عدد الملصقات المستخدمة؟",
+        explain:"“ربع” يعني قسمة على 4؛ لذلك القسمة.", solution:"20 ÷ 4 = 5" },
+
+      // ===== أسئلة إضافية متنوعة لزيادة الكثافة =====
+      { op:"add", level:2, tags:["معًا","الإجمالي"], text:"لدى فريقان 13 لاعبًا و12 لاعبًا.\nكم لاعبًا في الفريقين معًا؟",
+        explain:"ضم كميتين للحصول على الإجمالي؛ لذلك الجمع.", solution:"13 + 12 = 25" },
+      { op:"sub", level:2, tags:["أقل","كم ينقص"], text:"في الرف 28 كتابًا، ووُضع 19 كتابًا فقط في الصندوق.\nكم كتابًا بقي خارج الصندوق؟",
+        explain:"المطلوب متبقّي من الكل؛ لذلك الطرح.", solution:"28 − 19 = 9" },
+      { op:"mul", level:2, tags:["صفوف","أعمدة"], text:"رتّب المعلم 4 صفوف من الكراسي، في كل صف 7 كراسٍ.\nكم كرسيًا؟",
+        explain:"صفوف متساوية ونريد الكل؛ لذلك الضرب.", solution:"4 × 7 = 28" },
+      { op:"div", level:2, tags:["بالتساوي"], text:"لدى المدرسة 36 شهادة، تُوزّع بالتساوي على 9 فصول.\nكم شهادة لكل فصل؟",
+        explain:"توزيع بالتساوي؛ لذلك القسمة.", solution:"36 ÷ 9 = 4" },
+      { op:"sub", level:3, tags:["الفرق","كم يزيد"], text:"سعر لعبة 35 ريالًا، وسعر لعبة أخرى 27 ريالًا.\nكم يزيد سعر الأولى عن الثانية؟",
+        explain:"المطلوب فرق بين قيمتين؛ لذلك الطرح.", solution:"35 − 27 = 8" },
+      { op:"add", level:3, tags:["أضيف","ثم"], text:"كان عدد الكرات 11، ثم أضيفت 9 كرات، ثم أضيفت 5 كرات.\nما العملية المناسبة لإيجاد العدد النهائي؟",
+        explain:"المطلوب جمع إضافات متتالية للحصول على الإجمالي؛ لذلك الجمع.", solution:"11 + 9 + 5 = 25" },
+      { op:"mul", level:3, tags:["مرات","تكرار"], text:"طبع المعلم 8 أوراق تدريبية لكل طالب، وكان عدد الطلاب 6.\nكم ورقة طُبعت؟",
+        explain:"لكل طالب عدد ثابت ونريد الكل؛ لذلك الضرب.", solution:"8 × 6 = 48" },
+      { op:"div", level:3, tags:["كم مجموعة","تجميع"], text:"لدى فاطمة 48 ملصقًا، تريد وضعها في مجموعات متساوية، في كل مجموعة 8 ملصقات.\nكم مجموعة؟",
+        explain:"تجميع: نريد عدد المجموعات؛ لذلك القسمة.", solution:"48 ÷ 8 = 6" },
+    ];
+
+    // =============================
+    // عناصر الواجهة
+    // =============================
+    const tabHome = document.getElementById("tabHome");
+    const tabLearn = document.getElementById("tabLearn");
+    const tabQuiz = document.getElementById("tabQuiz");
+
+    const btnHome = document.getElementById("btnHome");
+    const btnLearn = document.getElementById("btnLearn");
+    const btnQuiz = document.getElementById("btnQuiz");
+    const btnTheme = document.getElementById("btnTheme");
+
+    const viewTitle = document.getElementById("viewTitle");
+    const badgeState = document.getElementById("badgeState");
+
+    const viewHome = document.getElementById("viewHome");
+    const viewLearn = document.getElementById("viewLearn");
+    const viewQuiz = document.getElementById("viewQuiz");
+
+    const quizCountSel = document.getElementById("quizCount");
+    const scopeSel = document.getElementById("scopeSel");
+    const levelSel = document.getElementById("levelSel");
+
+    const startQuizFromHome = document.getElementById("startQuizFromHome");
+    const printRules = document.getElementById("printRules");
+
+    const bar = document.getElementById("bar");
+    const progressText = document.getElementById("progressText");
+    const qTitle = document.getElementById("qTitle");
+    const qText = document.getElementById("qText");
+    const choices = document.getElementById("choices");
+
+    const btnHint = document.getElementById("btnHint");
+    const hintBox = document.getElementById("hintBox");
+
+    const resultBox = document.getElementById("resultBox");
+    const resultTitle = document.getElementById("resultTitle");
+    const explain = document.getElementById("explain");
+    const toggleSolution = document.getElementById("toggleSolution");
+    const eqBox = document.getElementById("eqBox");
+    const btnNext = document.getElementById("btnNext");
+    const btnRestart = document.getElementById("btnRestart");
+
+    const kpiScore = document.getElementById("kpiScore");
+    const kpiCorrect = document.getElementById("kpiCorrect");
+    const kpiWrong = document.getElementById("kpiWrong");
+    const kpiBest = document.getElementById("kpiBest");
+
+    const teacherNameInput = document.getElementById("teacherName");
+    const saveNameBtn = document.getElementById("saveName");
+    const teacherNameOut = document.getElementById("teacherNameOut");
+
+    // عناصر تعابير القواعد
+    const phrAdd = document.getElementById("phrAdd");
+    const phrSub = document.getElementById("phrSub");
+    const phrMul = document.getElementById("phrMul");
+    const phrDiv = document.getElementById("phrDiv");
+
+    // =============================
+    // الثيم
+    // =============================
+    const THEME_KEY = "ops_decider_theme_v3";
+    function getTheme(){
+      const t = localStorage.getItem(THEME_KEY);
+      return (t === "light" || t === "dark") ? t : "dark";
+    }
+    function setTheme(t){ localStorage.setItem(THEME_KEY, t); }
+    function applyTheme(t){
+      document.documentElement.setAttribute("data-theme", t);
+      btnTheme.textContent = (t === "dark") ? "الوضع: داكن" : "الوضع: فاتح";
+    }
+    btnTheme.addEventListener("click", () => {
+      const next = (getTheme() === "dark") ? "light" : "dark";
+      setTheme(next);
+      applyTheme(next);
+    });
+
+    // =============================
+    // اسم المعلّم
+    // =============================
+    const NAME_KEY = "ops_decider_teacher_name_v2";
+    const DEFAULT_NAME = "أ/ فاطمة هزازي";
+    function loadTeacherName(){
+      const saved = (localStorage.getItem(NAME_KEY) || DEFAULT_NAME).trim();
+      if (teacherNameInput) teacherNameInput.value = saved;
+      if (teacherNameOut) teacherNameOut.textContent = saved || "—";
+    }
+    function saveTeacherName(){
+      const v = (teacherNameInput?.value || "").trim();
+      const finalName = v || DEFAULT_NAME;
+      localStorage.setItem(NAME_KEY, finalName);
+      if (teacherNameOut) teacherNameOut.textContent = finalName;
+    }
+    if (saveNameBtn) saveNameBtn.addEventListener("click", saveTeacherName);
+    if (teacherNameInput){
+      teacherNameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter"){ e.preventDefault(); saveTeacherName(); }
+      });
+    }
+
+    // =============================
+    // حالة التدريب
+    // =============================
+    let session = {
+      list: [],
+      idx: 0,
+      correct: 0,
+      wrong: 0,
+      answered: false,
+      showSolution: false,
+      mistakes: [],
+      finished: false
+    };
+
+    const BEST_KEY = "ops_decider_best_score_v2";
+    function getBest(){
+      const v = Number(localStorage.getItem(BEST_KEY) || "0");
+      return Number.isFinite(v) ? v : 0;
+    }
+    function setBest(v){ localStorage.setItem(BEST_KEY, String(v)); }
+
+    function setKPIs(){
+      const totalAnswered = session.correct + session.wrong;
+      const score = totalAnswered ? Math.round((session.correct / totalAnswered) * 100) : 0;
+      kpiScore.textContent = `النتيجة: ${score}`;
+      kpiCorrect.textContent = `إجابات صحيحة: ${session.correct}`;
+      kpiWrong.textContent = `إجابات غير صحيحة: ${session.wrong}`;
+      kpiBest.textContent = `أفضل نتيجة: ${getBest()}`;
+    }
+
+    function selectTab(name){
+      const map = { home: tabHome, learn: tabLearn, quiz: tabQuiz };
+      Object.entries(map).forEach(([k, el]) => el.setAttribute("aria-selected", k === name ? "true" : "false"));
+
+      viewHome.classList.toggle("hidden", name !== "home");
+      viewLearn.classList.toggle("hidden", name !== "learn");
+      viewQuiz.classList.toggle("hidden", name !== "quiz");
+
+      if(name === "home"){ viewTitle.textContent = "الواجهة"; badgeState.textContent = "جاهز"; }
+      if(name === "learn"){ viewTitle.textContent = "القواعد والأمثلة"; badgeState.textContent = "تعلّم"; }
+      if(name === "quiz"){ viewTitle.textContent = "التدريب"; badgeState.textContent = "تدريب"; }
+    }
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function matchesScope(q, scope){
+      if(scope === "mix") return true;
+      if(scope === "special"){
+        return (q.tags || []).some(t => SPECIAL_TAGS.includes(t));
+      }
+      return q.op === scope;
+    }
+
+    function matchesLevel(q, level){
+      if(level === "all") return true;
+      const n = Number(level);
+      return q.level === n;
+    }
+
+    function buildSession(count){
+      const scope = scopeSel?.value || "mix";
+      const level = levelSel?.value || "all";
+
+      const pool = QUESTIONS
+        .map((q, i) => ({q, i}))
+        .filter(({q}) => matchesScope(q, scope) && matchesLevel(q, level))
+        .map(({i}) => i);
+
+      const effectivePool = pool.length ? pool : QUESTIONS.map((_, i) => i);
+      const sh = shuffle(effectivePool);
+
+      const want = (count === 999) ? sh.length : Math.min(count, sh.length);
+
+      session.list = sh.slice(0, want);
+      session.idx = 0;
+      session.correct = 0;
+      session.wrong = 0;
+      session.answered = false;
+      session.showSolution = false;
+      session.mistakes = [];
+      session.finished = false;
+
+      setKPIs();
+    }
+
+    function formatHint(q){
+      const op = q.op;
+      const tags = (q.tags || []);
+      const tagLine = tags.length ? `تعابير مرتبطة بهذه المسألة: <strong>${tags.join("، ")}</strong>.` : "";
+      let specialLine = "";
+      const hasMulSpecial = tags.some(t => ["ضعف","مثل","مثلي","أمثال","أضعاف"].includes(t));
+      const hasDivSpecial = tags.some(t => ["نصف","ثلث","ربع"].includes(t));
+      if(hasMulSpecial){
+        specialLine = "تنبيه: تعابير <strong>الضعف/المِثل/الأمثال/الأضعاف</strong> تُشير غالبًا إلى <strong>الضرب</strong>.";
+      }else if(hasDivSpecial){
+        specialLine = "تنبيه: تعابير <strong>نصف/ثلث/ربع</strong> تُشير غالبًا إلى <strong>القسمة</strong>.";
+      }
+      const phrases = (PHRASES[op] || []).slice(0, 8).join("، ");
+      return `
+        <div style="font-weight:1000; margin-bottom:6px;">${OP_TYPE[op]}</div>
+        <div><strong>سؤال القرار:</strong> ${OP_DECISION[op]}</div>
+        <div style="margin-top:6px;"><strong>تعابير شائعة لهذه العملية:</strong> ${phrases}.</div>
+        ${tagLine ? `<div style="margin-top:6px;">${tagLine}</div>` : ""}
+        ${specialLine ? `<div style="margin-top:6px;">${specialLine}</div>` : ""}
+      `;
+    }
+
+    function renderQuestion(){
+      const total = session.list.length;
+      const currentNo = session.idx + 1;
+      const q = QUESTIONS[ session.list[session.idx] ];
+
+      const pct = total ? Math.round(((currentNo-1)/total)*100) : 0;
+      bar.style.width = pct + "%";
+      progressText.textContent = `السؤال ${currentNo} من ${total}`;
+
+      qTitle.textContent = `السؤال رقم ${currentNo}`;
+      qText.textContent = q.text;
+
+      hintBox.style.display = "none";
+      hintBox.innerHTML = formatHint(q);
+      btnHint.textContent = "إظهار تلميح";
+
+      choices.innerHTML = "";
+      OPS.forEach(op => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "choice";
+        b.innerHTML = `<span>${op.label}</span><span class="chip">اختيار</span>`;
+        b.addEventListener("click", () => onChoose(op.id));
+        choices.appendChild(b);
+      });
+
+      resultBox.style.display = "none";
+      resultTitle.textContent = "";
+      explain.textContent = "";
+      eqBox.style.display = "none";
+      eqBox.textContent = "";
+      toggleSolution.textContent = "إظهار الحل الحسابي";
+
+      session.answered = false;
+      session.showSolution = false;
+
+      btnNext.textContent = (currentNo === total) ? "عرض النتيجة" : "السؤال التالي";
+    }
+
+    function disableChoices(){
+      [...choices.querySelectorAll("button.choice")].forEach(btn => btn.setAttribute("disabled","disabled"));
+    }
+
+    function updateBestIfNeeded(){
+      const totalAnswered = session.correct + session.wrong;
+      if(!totalAnswered) return;
+      const score = Math.round((session.correct / totalAnswered) * 100);
+      const best = getBest();
+      if(score > best){
+        setBest(score);
+        kpiBest.textContent = `أفضل نتيجة: ${score}`;
+      }
+    }
+
+    function onChoose(selectedOp){
+      if(session.answered || session.finished) return;
+      session.answered = true;
+
+      const q = QUESTIONS[ session.list[session.idx] ];
+      const ok = selectedOp === q.op;
+
+      disableChoices();
+
+      resultBox.style.display = "block";
+      if(ok){
+        resultTitle.textContent = "إجابة صحيحة. أحسنت.";
+        resultTitle.className = "resultTitle ok";
+        session.correct += 1;
+      }else{
+        resultTitle.textContent = "إجابة غير صحيحة. راجع التفسير ثم أكمل التدريب.";
+        resultTitle.className = "resultTitle no";
+        session.wrong += 1;
+
+        session.mistakes.push({
+          text: q.text,
+          correct: OPS.find(o => o.id === q.op)?.label || q.op
+        });
+      }
+
+      const typeLine = OP_TYPE[q.op] ? `${OP_TYPE[q.op]}.\n` : "";
+      explain.textContent = typeLine + (q.explain || "التفسير غير متاح.");
+
+      eqBox.textContent = `الحل الحسابي: ${q.solution || "غير متاح"}`;
+      setKPIs();
+      updateBestIfNeeded();
+
+      const total = session.list.length;
+      const currentNo = session.idx + 1;
+      const pct = total ? Math.round((currentNo/total)*100) : 0;
+      bar.style.width = pct + "%";
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function showFinalSummary(){
+      session.finished = true;
+
+      const total = session.list.length;
+      const score = total ? Math.round((session.correct / total) * 100) : 0;
+
+      qTitle.textContent = "النتيجة النهائية";
+      qText.textContent =
+        `عدد الأسئلة: ${total}\n` +
+        `الإجابات الصحيحة: ${session.correct}\n` +
+        `الإجابات غير الصحيحة: ${session.wrong}\n` +
+        `النسبة: ${score}%\n\n` +
+        `توجيه: أعد التدريب بنمط (تعابير خاصة) لتثبيت الضعف/الأمثال/النصف… إذا لزم الأمر.`;
+
+      choices.innerHTML = "";
+      hintBox.style.display = "none";
+      resultBox.style.display = "block";
+
+      resultTitle.textContent =
+        (score >= 80) ? "أداء ممتاز." :
+        (score >= 60) ? "أداء جيد." :
+        "يحتاج إلى مزيد من التدريب.";
+      resultTitle.className = "resultTitle " + (score >= 80 ? "ok" : (score >= 60 ? "" : "no"));
+
+      explain.textContent = session.mistakes.length
+        ? "اضغط (إظهار الحل الحسابي) لعرض الأسئلة التي تحتاج مراجعة مع العملية الصحيحة."
+        : "لا توجد أخطاء. استمر على هذا المستوى.";
+
+      eqBox.style.display = "none";
+      eqBox.innerHTML = session.mistakes.length ? session.mistakes.map((m, i) =>
+        `<div style="margin:0 0 10px 0;">
+          <div style="font-weight:900; margin-bottom:4px;">${i+1}) العملية الصحيحة: ${m.correct}</div>
+          <div style="opacity:.95; line-height:1.8; white-space:pre-wrap;">${escapeHtml(m.text)}</div>
+        </div>`
+      ).join("") : "—";
+
+      session.showSolution = false;
+      toggleSolution.textContent = "إظهار المراجعة";
+      btnNext.textContent = "إعادة التدريب";
+    }
+
+    function nextStep(){
+      if(session.finished){
+        restartQuiz();
+        return;
+      }
+
+      const total = session.list.length;
+      const atLast = session.idx === total - 1;
+
+      if(!session.answered){
+        resultBox.style.display = "block";
+        resultTitle.textContent = "اختر عملية أولًا ثم تابع.";
+        resultTitle.className = "resultTitle no";
+        explain.textContent = "اختيار العملية المناسبة جزء أساسي من مهارة فهم المسألة اللفظية.";
+        eqBox.style.display = "none";
+        return;
+      }
+
+      if(atLast){
+        showFinalSummary();
+      }else{
+        session.idx += 1;
+        renderQuestion();
+      }
+    }
+
+    function restartQuiz(){
+      const raw = Number(quizCountSel.value || "10");
+      const count = (raw === 999) ? 999 : raw;
+      buildSession(count);
+      selectTab("quiz");
+      renderQuestion();
+      badgeState.textContent = "تدريب";
+    }
+
+    // =============================
+    // ربط الأحداث
+    // =============================
+    tabHome.addEventListener("click", () => selectTab("home"));
+    tabLearn.addEventListener("click", () => selectTab("learn"));
+    tabQuiz.addEventListener("click", () => { selectTab("quiz"); if(!session.list.length) restartQuiz(); });
+
+    btnHome.addEventListener("click", () => selectTab("home"));
+    btnLearn.addEventListener("click", () => selectTab("learn"));
+    btnQuiz.addEventListener("click", () => restartQuiz());
+
+    startQuizFromHome.addEventListener("click", () => restartQuiz());
+    printRules.addEventListener("click", () => { selectTab("learn"); setTimeout(() => window.print(), 200); });
+
+    btnHint.addEventListener("click", () => {
+      const isShown = hintBox.style.display === "block";
+      hintBox.style.display = isShown ? "none" : "block";
+      btnHint.textContent = isShown ? "إظهار تلميح" : "إخفاء التلميح";
+    });
+
+    toggleSolution.addEventListener("click", () => {
+      session.showSolution = !session.showSolution;
+      eqBox.style.display = session.showSolution ? "block" : "none";
+      if(session.finished){
+        toggleSolution.textContent = session.showSolution ? "إخفاء المراجعة" : "إظهار المراجعة";
+      }else{
+        toggleSolution.textContent = session.showSolution ? "إخفاء الحل الحسابي" : "إظهار الحل الحسابي";
+      }
+    });
+
+    btnNext.addEventListener("click", nextStep);
+    btnRestart.addEventListener("click", restartQuiz);
+
+    // =============================
+    // تعبئة تعابير القواعد
+    // =============================
+    function fillPhrases(el, arr){
+      if(!el) return;
+      el.innerHTML = arr.map(x => `<li>${escapeHtml(x)}</li>`).join("");
+    }
+
+    // بدء أولي
+    applyTheme(getTheme());
+    loadTeacherName();
+    setKPIs();
+    selectTab("home");
+
+    fillPhrases(phrAdd, PHRASES.add);
+    fillPhrases(phrSub, PHRASES.sub);
+    fillPhrases(phrMul, PHRASES.mul);
+    fillPhrases(phrDiv, PHRASES.div);
+  </script>
+</body>
+</html>
